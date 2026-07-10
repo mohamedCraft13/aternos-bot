@@ -1,28 +1,45 @@
-name: Aternos Keep Alive Bot
+name: 24/7 Minecraft Aternos Bot
 
 on:
   push:
     branches: [ main ]
-  schedule:
-    # Restarts automatically every 50 minutes to keep the connection fresh
-    - cron: '*/50 * * * *'
-  workflow_dispatch: # Allows you to manually click "Run" from GitHub
+  workflow_dispatch: # Allows you to start it manually from GitHub web interface
+  repository_dispatch:
+    types: [ restart-bot ]
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-node-version: '20'
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Execute Bedrock Bot
-        timeout-minutes: 60 
-        run: node bot.js
+    - name: Run Bot with 5.5-Hour Timeout
+      run: |
+        # Run your bot in the background
+        node bot.js &
+        BOT_PID=$!
+        
+        # Wait for 21000 seconds (5 hours and 50 minutes)
+        sleep 21000
+        
+        # Kill the bot gracefully before GitHub cuts it off
+        kill $BOT_PID
+        echo "Time limit approaching. Restarting worker loop..."
+
+    - name: Trigger Next Loop Lifecycle
+      run: |
+        curl -X POST \
+          -H "Authorization: token ${{ secrets.BOT_LOOP_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://github.com{{ github.repository }}/dispatches \
+          -d '{"event_type": "restart-bot"}'
