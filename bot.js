@@ -11,7 +11,7 @@ http.createServer((req, res) => {
 });
 
 // 2. Your Original Minecraft Bot Logic
-const host = 'burmilla.aternos.host'; 
+const host = 'antelope.aternos.host'; 
 const port = 52738; 
 const username = 'Bedrock_Bot';
 
