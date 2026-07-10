@@ -13,7 +13,7 @@ http.createServer((req, res) => {
 // 2. Your Original Minecraft Bot Logic
 const host = 'antelope.aternos.host'; 
 const port = 52738; 
-const username = 'Bedrock_Bot';
+const username = 'github_bot';
 
 function startBot() {
     console.log(`[${new Date().toLocaleTimeString()}] Connecting to Bedrock server ${host}:${port}...`);
@@ -23,7 +23,7 @@ function startBot() {
         port: port,
         username: username,
         offline: true, 
-        //skipPing: true
+        skipPing: true
     });
 
     client.on('join', () => {
@@ -41,3 +41,4 @@ function startBot() {
 }
 
 startBot();
+
