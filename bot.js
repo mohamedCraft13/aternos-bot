@@ -1,6 +1,17 @@
 const bedrock = require('bedrock-protocol');
+const http = require('http');
 
-const host = 'pikeblenny.aternos.host'; 
+// 1. Render Mandatory Health Check Server
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Minecraft Bot is Alive!\n');
+}).listen(PORT, () => {
+    console.log(`Render health check server listening on port ${PORT}`);
+});
+
+// 2. Your Original Minecraft Bot Logic
+const host = 'burmilla.aternos.host'; 
 const port = 52738; 
 const username = 'Bedrock_Bot';
 
@@ -11,12 +22,12 @@ function startBot() {
         host: host,
         port: port,
         username: username,
-        offline: true, // Bypasses Xbox Live, mapping directly to your Aternos settings
+        offline: true, 
         skipPing: true
     });
 
     client.on('join', () => {
-        console.log(`[${new Date().toLocaleTimeString()}] Success! ${username} is now online in the world.`);
+        console.log(`[${new Date().toLocaleTimeString()}] Success! ${username} is now online.`);
     });
 
     client.on('close', () => {
