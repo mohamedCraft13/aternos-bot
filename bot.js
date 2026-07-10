@@ -23,7 +23,7 @@ function startBot() {
         port: port,
         username: username,
         offline: true, 
-        skipPing: true
+        //skipPing: true
     });
 
     client.on('join', () => {
