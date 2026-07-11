@@ -11,7 +11,7 @@ http.createServer((req, res) => {
 });
 
 // 2. Your Original Minecraft Bot Logic
-const host = 'auggie.aternos.host'; 
+const host = 'fish.aternos.host'; 
 const port = 52738; 
 const username = 'github_bot';
 
